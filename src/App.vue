@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <h1>Simple Board</h1>
+        <h1>방명록</h1>
         <PostForm @post-submitted="addPost" />
         <PostList :posts="posts" />
     </div>
