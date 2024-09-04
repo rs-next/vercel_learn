@@ -15,11 +15,9 @@ import PostList from "./components/PostList.vue";
 const posts = ref([]);
 
 function addPost(post) {
-    // 서버에서 받아온 새로운 게시물을 목록에 추가
-    posts.value.unshift(post);
+    posts.value.unshift(post); // 새로운 게시물을 목록에 추가
 }
 
-// 페이지 로드 시 게시물 불러오기
 onMounted(async () => {
     try {
         const response = await axios.get("/api/getPosts");
