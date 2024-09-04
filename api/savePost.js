@@ -10,17 +10,14 @@ export default async function handler(req, res) {
 
         try {
             const client = await pool.connect();
-            const result = await client.query(
+            await client.query(
                 `
-                INSERT INTO posts (title, content, image)
-                VALUES ($1, $2, $3)
-                RETURNING *;
-                `,
+        INSERT INTO posts (title, content, image)
+        VALUES ($1, $2, $3)
+      `,
                 [title, content, image]
             );
-
-            const newPost = result.rows[0];
-            res.status(200).json(newPost); // 새로 삽입된 게시물 데이터 반환
+            res.status(200).json({ message: "Post created successfully" });
         } catch (error) {
             console.error("Database error:", error);
             res.status(500).json({
