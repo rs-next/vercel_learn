@@ -1,29 +1,14 @@
-<template>
-    <div class="post-form">
-        <form @submit.prevent="submitPost">
-            <input v-model="title" type="text" placeholder="Title" required />
-            <textarea
-                v-model="content"
-                placeholder="Content"
-                required
-            ></textarea>
-            <input type="file" @change="onFileChange" />
-            <button type="submit">Submit</button>
-        </form>
-    </div>
-</template>
-
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
-import { defineEmits } from "vue"; // defineEmits 사용
+import { defineEmits } from "vue"; // emit 사용
 
 const title = ref("");
 const content = ref("");
 const imageUrl = ref("");
 let selectedFile = null;
 
-const emit = defineEmits(["post-submitted"]); // post-submitted 이벤트 정의
+const emit = defineEmits(["post-submitted"]); // emit 선언
 
 function onFileChange(event) {
     selectedFile = event.target.files[0];
@@ -49,15 +34,14 @@ async function submitPost() {
                 imageUrl.value = response.data.url;
                 newPost.image = imageUrl.value;
 
-                // 최종적으로 게시물 저장
                 const postResponse = await axios.post("/api/savePost", newPost);
-                emit("post-submitted", postResponse.data); // 부모 컴포넌트로 이벤트 전달
+                emit("post-submitted", postResponse.data); // 부모 컴포넌트에 이벤트 전송
                 resetForm();
             };
             reader.readAsDataURL(selectedFile);
         } else {
             const postResponse = await axios.post("/api/savePost", newPost);
-            emit("post-submitted", postResponse.data); // 부모 컴포넌트로 이벤트 전달
+            emit("post-submitted", postResponse.data); // 부모 컴포넌트에 이벤트 전송
             resetForm();
         }
     } catch (error) {
